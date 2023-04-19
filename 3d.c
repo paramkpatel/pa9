@@ -2,12 +2,9 @@
  * @AUTHOR: Param Patel
  * @FILE: 3d.c
  * @Instructor: Ben Dicken
- * @ASSIGNMENT: 3D - Programming Assignment 8
+ * @ASSIGNMENT: 3D - Programming Assignment 9
  * @COURSE: CSc 352; Spring 2023
- * @Purpose: This purpose of this file is to write 4/5 functions that make
- * using 3D objects that calculate the dimensions and show them accordingly.
- * Usage - run make
- * Usage - ./3d
+ * @Purpose: 
  */
 
 #include "3d.h"
@@ -23,8 +20,6 @@ void Scene3D_add_triangle(Scene3D *pD, Triangle3D trtriangle3D);
 void Scene3D_add_quadrilateral(Scene3D *scene, Coordinate3D a, Coordinate3D b, Coordinate3D c, Coordinate3D d);
 
 void sphereHelper(Scene3D *scene, Coordinate3D origin, double radius, double theta, double phi, Coordinate3D *out);
-
-double to_degrees(double in);
 
 double round_double(double x, int digits);
 
@@ -309,6 +304,9 @@ void Scene3D_write_stl_binary(Scene3D *scene, char *file_name)
     fclose(fp);
 }
 
+/**
+ * 
+*/
 void Scene3D_add_sphere(Scene3D *scene, Coordinate3D origin, double radius, double increment)
 {
     Scene3D *sphere = malloc(1 * (sizeof(Scene3D)));
@@ -326,10 +324,14 @@ void Scene3D_add_sphere(Scene3D *scene, Coordinate3D origin, double radius, doub
             sphereHelper(scene, origin, radius, theta, phi - increment, &b);
             sphereHelper(scene, origin, radius, theta - increment, phi, &c);
             sphereHelper(scene, origin, radius, theta - increment, phi - increment, &d);
+            // 
         }
     }
 }
 
+/**
+ * 
+*/
 void sphereHelper(Scene3D *scene, Coordinate3D origin, double radius, double theta, double phi, Coordinate3D *out)
 {
     theta = theta * (PI / 180);
@@ -339,6 +341,9 @@ void sphereHelper(Scene3D *scene, Coordinate3D origin, double radius, double the
     (*out).z = round_double((radius * cos(theta)) + origin.z, 4);
 }
 
+/**
+ * 
+*/
 double round_double(double x, int digits)
 {
     double fac = pow(10, digits);
