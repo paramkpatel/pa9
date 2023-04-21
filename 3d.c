@@ -4,7 +4,7 @@
  * @Instructor: Ben Dicken
  * @ASSIGNMENT: 3D - Programming Assignment 9
  * @COURSE: CSc 352; Spring 2023
- * @Purpose: 
+ * @Purpose:
  */
 
 #include "3d.h"
@@ -21,7 +21,9 @@ void Scene3D_add_quadrilateral(Scene3D *scene, Coordinate3D a, Coordinate3D b, C
 
 void sphereHelper(Scene3D *scene, Coordinate3D origin, double radius, double theta, double phi, Coordinate3D *out);
 
-double round_double(double x, int digits);
+double roundDouble(double x, int digits);
+
+void write_triangle(FILE *file, Triangle3D triangle);
 
 /**
  * Helps create space and make new 3D Scene.
@@ -274,80 +276,167 @@ void Scene3D_add_quadrilateral(Scene3D *scene, Coordinate3D a, Coordinate3D b, C
  */
 void Scene3D_add_triangle(Scene3D *pD, Triangle3D triangle3D)
 {
-     Triangle3DNode * node = (Triangle3DNode*) malloc(sizeof (Triangle3DNode));
+    Triangle3DNode *node = (Triangle3DNode *)malloc(sizeof(Triangle3DNode));
     node->triangle = triangle3D;
     node->next = pD->root;
     pD->root = node;
 }
 
+/**
+ *
+ * @param file
+ * @param triangle
+ */
+void write_triangle(FILE *file, Triangle3D triangle)
+{
+    float pDouble[12] = {0.0f, 0.0f, 0.0f, triangle.a.x, triangle.a.y, triangle.a.z, triangle.b.x, triangle.b.y,
+                         triangle.b.z, triangle.c.x, triangle.c.y, triangle.c.z};
+    fwrite(pDouble, sizeof(float), 12, file);
+    uint16_t end = 0;
+    fwrite(&end, sizeof(uint16_t), 1, file);
+}
+
+/**
+ *
+ * @param scene
+ * @param file_name
+ */
 void Scene3D_write_stl_binary(Scene3D *scene, char *file_name)
 {
+    // open file
     FILE *fp = fopen(file_name, "wb");
+    // error checking
     if (fp == NULL)
     {
         exit(0);
     }
-
+    // 80 header -> zeroed out
+    uint8_t getHeader[80] = {0};
+    fwrite(&getHeader, 1, 80, fp);
+    uint32_t temp = scene->count;
+    fwrite(&temp, sizeof(uint32_t), 1, fp);
+    Triangle3DNode *curr = scene->root;
+    for (int i = 0; i < temp; i++)
+    {
+        write_triangle(fp, curr->triangle);
+        curr = curr->next;
+    }
     fflush(fp);
     fclose(fp);
 }
 
 /**
- * 
-*/
+ *
+ * @param scene
+ * @param origin
+ * @param radius
+ * @param increment
+ */
 void Scene3D_add_sphere(Scene3D *scene, Coordinate3D origin, double radius, double increment)
 {
-    Scene3D* sphere = malloc(1 * (sizeof(Scene3D)));
+    Scene3D *sphere = malloc(1 * (sizeof(Scene3D)));
     sphere->count = 0;
     sphere->root = NULL;
     Coordinate3D a;
     Coordinate3D b;
     Coordinate3D c;
     Coordinate3D d;
+    double radTheta, radPhi, sinTheta, cosTheta, sinPhi, cosPhi;
     for (int phi = increment; phi <= 180; phi = phi + increment)
     {
         for (int theta = 0; theta < 360; theta = theta + increment)
         {
-            sphereHelper(scene, origin, radius, theta, phi, &a);
-            sphereHelper(scene, origin, radius, theta, phi - increment, &b);
-            sphereHelper(scene, origin, radius, theta - increment, phi, &d);
-            sphereHelper(scene, origin, radius, theta - increment, phi - increment, &c);
+            radTheta = theta * (PI / 180);
+            radPhi = phi * (PI / 180);
+            sinTheta = sin(radTheta);
+            cosTheta = cos(radTheta);
+            sinPhi = sin(radPhi);
+            cosPhi = cos(radPhi);
+
+            a.x = roundDouble(radius * sinTheta * cosPhi + origin.x, 4);
+            a.y = roundDouble(radius * sinTheta * sinPhi + origin.y, 4);
+            a.z = roundDouble(radius * cosTheta + origin.z, 4);
+
+            radTheta = theta * (PI / 180);
+            radPhi = (phi - increment) * (PI / 180);
+            sinTheta = sin(radTheta);
+            cosTheta = cos(radTheta);
+            sinPhi = sin(radPhi);
+            cosPhi = cos(radPhi);
+
+            b.x = roundDouble(radius * sinTheta * cosPhi + origin.x, 4);
+            b.y = roundDouble(radius * sinTheta * sinPhi + origin.y, 4);
+            b.z = roundDouble(radius * cosTheta + origin.z, 4);
+
+            radTheta = (theta - increment) * (PI / 180);
+            radPhi = phi * (PI / 180);
+            sinTheta = sin(radTheta);
+            cosTheta = cos(radTheta);
+            sinPhi = sin(radPhi);
+            cosPhi = cos(radPhi);
+
+            d.x = roundDouble(radius * sinTheta * cosPhi + origin.x, 4);
+            d.y = roundDouble(radius * sinTheta * sinPhi + origin.y, 4);
+            d.z = roundDouble(radius * cosTheta + origin.z, 4);
+
+            radTheta = (theta - increment) * (PI / 180);
+            radPhi = (phi - increment) * (PI / 180);
+            sinTheta = sin(radTheta);
+            cosTheta = cos(radTheta);
+            sinPhi = sin(radPhi);
+            cosPhi = cos(radPhi);
+
+            c.x = roundDouble(radius * sinTheta * cosPhi + origin.x, 4);
+            c.y = roundDouble(radius * sinTheta * sinPhi + origin.y, 4);
+            c.z = roundDouble(radius * cosTheta + origin.z, 4);
 
             Scene3D_add_quadrilateral(scene, a, b, c, d);
-
-            
         }
     }
 }
 
 /**
- * 
-*/
-void sphereHelper(Scene3D *scene, Coordinate3D origin, double radius, double theta, double phi, Coordinate3D *out)
+ *
+ * @param x
+ * @param digits
+ * @return
+ */
+double roundDouble(double x, int digits)
 {
-    theta = theta * (PI / 180);
-    phi = phi * (PI / 180);
-    (*out).x = round_double((radius * sin(theta) * cos(phi)) + origin.x, 4);
-    (*out).y = round_double((radius * sin(theta) * sin(phi)) + origin.y, 4);
-    (*out).z = round_double((radius * cos(theta)) + origin.z, 4);
+    double powerFN = pow(10, digits);
+    double roundFN = roundf(roundf(x * powerFN));
+    roundFN = roundFN / powerFN;
+    if (roundFN == -0.0f)
+    {
+        roundFN = 0.0f;
+    }
+    return roundFN;
 }
 
 /**
- * 
-*/
-double round_double(double x, int digits)
-{
-    double fac = pow(10, digits);
-    double res = roundf(roundf(x * fac));
-    res = res / fac;
-    if (res == -0.0f)
-    {
-        res = 0.0f;
-    }
-    return res;
-}
-
-
+ *
+ * @param scene
+ * @param origin
+ * @param size
+ * @param levels
+ */
 void Scene3D_add_fractal(Scene3D *scene, Coordinate3D origin, double size, int levels)
 {
+    // one cube that gets the size of depth height and width
+    Scene3D_add_cuboid(scene, origin, size, size, size);
+
+    //    Coordinate3D one = {origin.x, origin.y, origin.z};
+    //    Coordinate3D two = {origin.x, origin.y, origin.z};
+    //    Coordinate3D three = {origin.x, origin.y, origin.z};
+    //    Coordinate3D four = {origin.x, origin.y, origin.z};
+    //    Coordinate3D five = {origin.x, origin.y, origin.z};
+    //    Coordinate3D six = {origin.x, origin.y, origin.z};
+
+    // six new cubes
+    Scene3D_add_cuboid(scene, origin, size, size, size);
+    Scene3D_add_cuboid(scene, origin, size, size, size);
+    Scene3D_add_cuboid(scene, origin, size, size, size);
+    Scene3D_add_cuboid(scene, origin, size, size, size);
+    Scene3D_add_cuboid(scene, origin, size, size, size);
+    Scene3D_add_cuboid(scene, origin, size, size, size);
 }
