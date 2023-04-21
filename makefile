@@ -7,7 +7,7 @@ generator: generator.c $(OBJ) $(DEPS)
 	$(CC) $(FLAG) generator.c $(OBJ) -o generator
 
 $(OBJ): 3d.c $(DEPS)
-	$(CC) $(FLAG) -c 3d.c -o $(OBJ)
+	$(CC) $(FLAG) -c 3d.c -o $(OBJ) -lm
 
 clean:
 	rm -f generator $(OBJ)

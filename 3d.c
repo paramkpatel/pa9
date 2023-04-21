@@ -324,7 +324,7 @@ void Scene3D_add_sphere(Scene3D *scene, Coordinate3D origin, double radius, doub
             sphereHelper(scene, origin, radius, theta, phi - increment, &b);
             sphereHelper(scene, origin, radius, theta - increment, phi, &c);
             sphereHelper(scene, origin, radius, theta - increment, phi - increment, &d);
-            // 
+            
         }
     }
 }
