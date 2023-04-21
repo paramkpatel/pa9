@@ -309,7 +309,7 @@ void Scene3D_write_stl_binary(Scene3D *scene, char *file_name)
 */
 void Scene3D_add_sphere(Scene3D *scene, Coordinate3D origin, double radius, double increment)
 {
-    Scene3D *sphere = malloc(1 * (sizeof(Scene3D)));
+    Scene3D* sphere = malloc(1 * (sizeof(Scene3D)));
     sphere->count = 0;
     sphere->root = NULL;
     Coordinate3D a;
@@ -322,8 +322,11 @@ void Scene3D_add_sphere(Scene3D *scene, Coordinate3D origin, double radius, doub
         {
             sphereHelper(scene, origin, radius, theta, phi, &a);
             sphereHelper(scene, origin, radius, theta, phi - increment, &b);
-            sphereHelper(scene, origin, radius, theta - increment, phi, &c);
-            sphereHelper(scene, origin, radius, theta - increment, phi - increment, &d);
+            sphereHelper(scene, origin, radius, theta - increment, phi, &d);
+            sphereHelper(scene, origin, radius, theta - increment, phi - increment, &c);
+
+            Scene3D_add_quadrilateral(scene, a, b, c, d);
+            
             
         }
     }
@@ -355,6 +358,7 @@ double round_double(double x, int digits)
     }
     return res;
 }
+
 
 void Scene3D_add_fractal(Scene3D *scene, Coordinate3D origin, double size, int levels)
 {
