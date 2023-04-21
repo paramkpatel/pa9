@@ -274,22 +274,10 @@ void Scene3D_add_quadrilateral(Scene3D *scene, Coordinate3D a, Coordinate3D b, C
  */
 void Scene3D_add_triangle(Scene3D *pD, Triangle3D triangle3D)
 {
-    Triangle3DNode *new_node = (Triangle3DNode *)malloc(sizeof(Triangle3DNode));
-    new_node->triangle = triangle3D;
-    new_node->next = NULL;
-    if (pD->root == NULL)
-    {
-        pD->root = new_node;
-        pD->count = 1;
-        return;
-    }
-    Triangle3DNode *current_node = pD->root;
-    while (current_node->next != NULL)
-    {
-        current_node = current_node->next;
-    }
-    current_node->next = new_node;
-    pD->count++;
+     Triangle3DNode * node = (Triangle3DNode*) malloc(sizeof (Triangle3DNode));
+    node->triangle = triangle3D;
+    node->next = pD->root;
+    pD->root = node;
 }
 
 void Scene3D_write_stl_binary(Scene3D *scene, char *file_name)
@@ -326,7 +314,7 @@ void Scene3D_add_sphere(Scene3D *scene, Coordinate3D origin, double radius, doub
             sphereHelper(scene, origin, radius, theta - increment, phi - increment, &c);
 
             Scene3D_add_quadrilateral(scene, a, b, c, d);
-            
+
             
         }
     }
