@@ -414,7 +414,7 @@ double roundDouble(double x, int digits)
 }
 
 /**
- *
+ * 
  * @param scene
  * @param origin
  * @param size
@@ -422,21 +422,25 @@ double roundDouble(double x, int digits)
  */
 void Scene3D_add_fractal(Scene3D *scene, Coordinate3D origin, double size, int levels)
 {
-    // one cube that gets the size of depth height and width
-    Scene3D_add_cuboid(scene, origin, size, size, size);
-
-    //    Coordinate3D one = {origin.x, origin.y, origin.z};
-    //    Coordinate3D two = {origin.x, origin.y, origin.z};
-    //    Coordinate3D three = {origin.x, origin.y, origin.z};
-    //    Coordinate3D four = {origin.x, origin.y, origin.z};
-    //    Coordinate3D five = {origin.x, origin.y, origin.z};
-    //    Coordinate3D six = {origin.x, origin.y, origin.z};
-
-    // six new cubes
-    Scene3D_add_cuboid(scene, origin, size, size, size);
-    Scene3D_add_cuboid(scene, origin, size, size, size);
-    Scene3D_add_cuboid(scene, origin, size, size, size);
-    Scene3D_add_cuboid(scene, origin, size, size, size);
-    Scene3D_add_cuboid(scene, origin, size, size, size);
-    Scene3D_add_cuboid(scene, origin, size, size, size);
+    // base case
+    if (levels == 0)
+    {
+        return;
+    }
+    else
+    {
+        // add a cube
+        Scene3D_add_cuboid(scene, origin, size, size, size);
+        Coordinate3D coords[6] = {
+            {origin.x + size / 2, origin.y, origin.z},
+            {origin.x - size / 2, origin.y, origin.z},
+            {origin.x, origin.y + size / 2, origin.z},
+            {origin.x, origin.y - size / 2, origin.z},
+            {origin.x, origin.y, origin.z + size / 2},
+            {origin.x, origin.y, origin.z - size / 2}};
+        for (int i = 0; i < 6; i++)
+        {
+            Scene3D_add_fractal(scene, coords[i], size / 2, levels - 1);
+        }
+    }
 }

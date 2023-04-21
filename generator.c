@@ -4,7 +4,7 @@
  * @Instructor: Ben Dicken
  * @ASSIGNMENT: 3D - Programming Assignment 9
  * @COURSE: CSc 352; Spring 2023
- * @Purpose: 
+ * @Purpose:
  */
 
 #include <stdio.h>
@@ -12,7 +12,8 @@
 #include <math.h>
 #include "3d.h"
 
-int main() {
+int main()
+{
     printf("Hello World!\n");
     return 0;
 }
