@@ -4,7 +4,7 @@
  * @Instructor: Ben Dicken
  * @ASSIGNMENT: 3D - Programming Assignment 9
  * @COURSE: CSc 352; Spring 2023
- * @Purpose:
+ * @Purpose: TODO: COMMENTS
  */
 
 #include "3d.h"
