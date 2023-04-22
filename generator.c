@@ -16,9 +16,9 @@ int main()
 {
     Scene3D* s = Scene3D_create();
     Coordinate3D origin = (Coordinate3D){100, 100, 0};
-    Scene3D_add_fractal(s,origin, 50, 5 );
-    Scene3D_write_stl_binary(s, "bin.stl");
+    Scene3D_add_fractal(s,origin, 50, 20);
+    Scene3D_write_stl_text(s, "output.stl");
     Scene3D_destroy(s);
-    // printf("check here\n");
+    // printf("debug\n");
     return 0;
 }

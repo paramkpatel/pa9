@@ -4,7 +4,9 @@
  * @Instructor: Ben Dicken
  * @ASSIGNMENT: 3D - Programming Assignment 9
  * @COURSE: CSc 352; Spring 2023
- * @Purpose: TODO: COMMENTS
+ * @Purpose: The purpose of this file is to
+ * implement the 3D shapes and write .stl files in
+ * binary and regular text.
  */
 
 #include "3d.h"
@@ -250,12 +252,13 @@ void Scene3D_add_cuboid(Scene3D *scene, Coordinate3D origin, double width, doubl
 }
 
 /**
- * This was a given method in the Spec.
+ * This was a given method in the Spec.That creates a
+ * quadrilateral with triangles.
  * @param scene scene
- * @param a
- * @param b
- * @param c
- * @param d
+ * @param a a
+ * @param b b
+ * @param c c
+ * @param d d
  */
 void Scene3D_add_quadrilateral(Scene3D *scene, Coordinate3D a, Coordinate3D b, Coordinate3D c, Coordinate3D d)
 {
@@ -283,7 +286,7 @@ void Scene3D_add_triangle(Scene3D *pD, Triangle3D triangle3D)
 }
 
 /**
- *
+ * Helper for the STL binary file.
  * @param file
  * @param triangle
  */
@@ -297,8 +300,8 @@ void write_triangle(FILE *file, Triangle3D triangle)
 }
 
 /**
- * This function writes the stl file into binary format. 
- * Which can be used to create 3D objects. 
+ * This function writes the stl file into binary format.
+ * Which can be used to create 3D objects.
  * @param scene
  * @param file_name
  */
@@ -322,16 +325,17 @@ void Scene3D_write_stl_binary(Scene3D *scene, char *file_name)
         write_triangle(fp, curr->triangle);
         curr = curr->next;
     }
+    // flush and close the file
     fflush(fp);
     fclose(fp);
 }
 
 /**
- *
- * @param scene
- * @param origin
- * @param radius
- * @param increment
+ * This function implements the 3D sphere.
+ * @param scene scene
+ * @param origin origin
+ * @param radius radius
+ * @param increment inc
  */
 void Scene3D_add_sphere(Scene3D *scene, Coordinate3D origin, double radius, double increment)
 {
@@ -397,7 +401,8 @@ void Scene3D_add_sphere(Scene3D *scene, Coordinate3D origin, double radius, doub
 }
 
 /**
- *
+ * Helper method that rounds.
+ * Also check for the -0.0
  * @param x
  * @param digits
  * @return
@@ -415,11 +420,12 @@ double roundDouble(double x, int digits)
 }
 
 /**
- * 
- * @param scene
- * @param origin
- * @param size
- * @param levels
+ * This function creates the complex and large shape fractal using
+ * recursion.
+ * @param scene scene
+ * @param origin origin
+ * @param size size of fractal
+ * @param levels levels in the fractal
  */
 void Scene3D_add_fractal(Scene3D *scene, Coordinate3D origin, double size, int levels)
 {
