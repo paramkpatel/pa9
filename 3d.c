@@ -17,6 +17,8 @@
 #include <stdint.h>
 #include <math.h>
 
+// declaring methods
+
 void Scene3D_add_triangle(Scene3D *pD, Triangle3D trtriangle3D);
 
 void Scene3D_add_quadrilateral(Scene3D *scene, Coordinate3D a, Coordinate3D b, Coordinate3D c, Coordinate3D d);

@@ -16,20 +16,22 @@
 /**
  * Represents a Cartesian coordinate (x,y,z) in 3D space.
  */
-typedef struct Coordinate3D {
-    double x;
-    double y;
-    double z;
+typedef struct Coordinate3D
+{
+        double x;
+        double y;
+        double z;
 } Coordinate3D;
 
 /**
  * Represents a triangle in 3D Space.
  * a, b, and c represent the locations of each corner of the triangle.
  */
-typedef struct Triangle3D {
-    Coordinate3D a;
-    Coordinate3D b;
-    Coordinate3D c;
+typedef struct Triangle3D
+{
+        Coordinate3D a;
+        Coordinate3D b;
+        Coordinate3D c;
 } Triangle3D;
 
 /**
@@ -37,9 +39,10 @@ typedef struct Triangle3D {
  * It also contains a pointer to the next node.
  * This is so that we can maintain a linked-list of all of the triangles in this scene.
  */
-typedef struct Triangle3DNode {
-    Triangle3D triangle;
-    struct Triangle3DNode * next;
+typedef struct Triangle3DNode
+{
+        Triangle3D triangle;
+        struct Triangle3DNode *next;
 } Triangle3DNode;
 
 /**
@@ -50,9 +53,10 @@ typedef struct Triangle3DNode {
  * This array should start off with a small value to save memory, and only grow
  * as needed as more Object3Ds are added.
  */
-typedef struct Scene3D {
-    long count;
-    Triangle3DNode* root;
+typedef struct Scene3D
+{
+        long count;
+        Triangle3DNode *root;
 } Scene3D;
 
 /**
@@ -60,7 +64,7 @@ typedef struct Scene3D {
  * initializes the values to defaults as necessary, and returns a pointer to
  * the object in memory.
  */
-Scene3D* Scene3D_create();
+Scene3D *Scene3D_create();
 
 /**
  * Frees the memory on the heap for the Scene3D itself, as well as the Object3D
@@ -68,7 +72,7 @@ Scene3D* Scene3D_create();
  *   Parameters:
  *     scene: The scene to destroy
  */
-void Scene3D_destroy(Scene3D* scene);
+void Scene3D_destroy(Scene3D *scene);
 
 /**
  * Write every shape from the Scene3D to the file with file_name using the STL
@@ -78,7 +82,7 @@ void Scene3D_destroy(Scene3D* scene);
  *     scene: The scene to write to the file
  *     file_name: The name of the file to write the STL data to
  */
-void Scene3D_write_stl_text(Scene3D* scene, char* file_name);
+void Scene3D_write_stl_text(Scene3D *scene, char *file_name);
 
 /**
  * This function should create a new Object3D on the heap and populate it with
@@ -99,9 +103,9 @@ void Scene3D_write_stl_text(Scene3D* scene, char* file_name);
  *                    "right"
  */
 void Scene3D_add_pyramid(
-        Scene3D* scene,
-        Coordinate3D origin,
-        double width, double height, char* orientation);
+    Scene3D *scene,
+    Coordinate3D origin,
+    double width, double height, char *orientation);
 
 /**
  * This function should create a new Object3D on the heap and populate it with
@@ -115,9 +119,9 @@ void Scene3D_add_pyramid(
  *     depth: The depth of the cuboid (z)
  */
 void Scene3D_add_cuboid(
-        Scene3D* scene,
-        Coordinate3D origin,
-        double width, double height, double depth);
+    Scene3D *scene,
+    Coordinate3D origin,
+    double width, double height, double depth);
 
 /**
  * Function for adding a quadrilateral to a scene.
@@ -126,8 +130,8 @@ void Scene3D_add_cuboid(
  *     a, b, c, d: The coordinates of the corners of this quadrilateral in 3D space.
  */
 void Scene3D_add_quadrilateral(
-        Scene3D* scene,
-        Coordinate3D a, Coordinate3D b, Coordinate3D c, Coordinate3D d);
+    Scene3D *scene,
+    Coordinate3D a, Coordinate3D b, Coordinate3D c, Coordinate3D d);
 
 /**
  * Write every shape from the Scene3D to the file with file_name using the STL
@@ -137,7 +141,7 @@ void Scene3D_add_quadrilateral(
  *     scene: The scene to write to the file
  *     file_name: The name of the file to write the STL data to
  */
-void Scene3D_write_stl_binary(Scene3D* scene, char* file_name);
+void Scene3D_write_stl_binary(Scene3D *scene, char *file_name);
 
 /**
  * This function should create a new Object3D on the heap and populate it with
@@ -152,9 +156,9 @@ void Scene3D_write_stl_binary(Scene3D* scene, char* file_name);
  *
  */
 void Scene3D_add_sphere(
-        Scene3D* scene,
-        Coordinate3D origin,
-        double radius, double increment);
+    Scene3D *scene,
+    Coordinate3D origin,
+    double radius, double increment);
 
 /**
  * This function should create a new Object3D on the heap and populate it with
@@ -167,8 +171,8 @@ void Scene3D_add_sphere(
  *     levels: The number of levels to recurse to when building the fractal
  */
 void Scene3D_add_fractal(
-        Scene3D* scene,
-        Coordinate3D origin,
-        double size, int levels);
+    Scene3D *scene,
+    Coordinate3D origin,
+    double size, int levels);
 
 #endif
