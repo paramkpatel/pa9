@@ -33,7 +33,7 @@ typedef struct Triangle3D {
 } Triangle3D;
 
 /**
- * A Triangle3DNode represends a triangle in 3D space.
+ * A Triangle3DNode represents a triangle in 3D space.
  * It also contains a pointer to the next node.
  * This is so that we can maintain a linked-list of all of the triangles in this scene.
  */

@@ -297,7 +297,8 @@ void write_triangle(FILE *file, Triangle3D triangle)
 }
 
 /**
- *
+ * This function writes the stl file into binary format. 
+ * Which can be used to create 3D objects. 
  * @param scene
  * @param file_name
  */
